@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- cores principais -->
+    <color name="blue_primary">#2457C5</color>
+    <color name="blue_dark">#173B86</color>
+    <color name="teal_accent">#16A6A1</color>
+
+    <!-- cores do fundo -->
+
+    <color name="background">#F5F7FB</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- cores pra texto -->
+
+    <color name="text_primary">#1E293B</color>
+    <color name="text_secondary">#64748B</color>
+
+
+    <!-- talvez outras cores -->
+    <color name="success">#16A34A</color>
+    <color name="error">#DC2626</color>
+    <color name="black">#FF000000</color>
+
+</resources>

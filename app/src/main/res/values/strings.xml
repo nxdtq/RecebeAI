@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">RecebeAI</string>
+    <string name="login_title">Seja Bem-Vindo ao RecebeAI</string>
+    <string name="login_subtitle">
+        Seu APP de Gerenciamento de Encomendas!
+    </string>
+    <string name="email_hint">Digite seu e-mail</string>
+    <string name="password_hint">Digite sua senha</string>
+    <string name="login_button">Entrar</string>
+    <string name="forgot_password">Esqueceu sua senha?</string>
+
+</resources>
