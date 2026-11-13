@@ -44,7 +44,7 @@ O aplicativo foi planejado para trabalhar com três perfis:
   Portaria (`portaria`)               Cadastrar encomendas e registrar
                                       retiradas.
 
-  Morador (`morador`)                 Consultar encomendas destinadas a
+   Morador (`morador`)                 Consultar encomendas destinadas a
                                       si e acompanhar o histórico.
   -----------------------------------------------------------------------
 
