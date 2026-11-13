@@ -20,10 +20,10 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-
     private EditText editEmail;
     private EditText editPassword;
     private Button buttonLogin;
+    private Button buttonRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +41,14 @@ public class MainActivity extends AppCompatActivity {
         editEmail = findViewById(R.id.editEmail);
         editPassword = findViewById(R.id.editPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
+        buttonRegister = findViewById(R.id.buttonRegister);
 
         // Configurar botão Entrar
         buttonLogin.setOnClickListener(v -> realizarLogin());
+        buttonRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, CadastroActivity.class);
+            startActivity(intent);
+        });
 
         // Ajustar interface às barras do Android
         ViewCompat.setOnApplyWindowInsetsListener(

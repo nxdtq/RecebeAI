@@ -22,4 +22,15 @@
     <string name="admin_history">Histórico de encomendas</string>
     <string name="admin_logout">Sair da conta</string>
 
+    <string name="register_button">Criar minha Conta</string>
+
+    // tela de se cadastrar
+
+    <string name="register_title">Criar minha conta</string>
+    <string name="register_subtitle">Cadastre-se e aguarde a aceitação.</string>
+    <string name="name_hint">Digite o seu nome completo</string>
+    <string name="register_password_hint">Crie uma Senha</string>
+    <string name="register_submit">Cadastrar</string>
+    <string name="back_to_login">Já possui uma conta? Entrar</string>
+
 </resources>
