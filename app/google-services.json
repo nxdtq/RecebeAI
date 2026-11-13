@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "191266594525",
+    "project_id": "recebeai-d9780",
+    "storage_bucket": "recebeai-d9780.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191266594525:android:3c2ffb65aeb98cb7e24534",
+        "android_client_info": {
+          "package_name": "com.example.recebeai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqqW_Gct84CwBk15NlEMONXSYjDYNvKHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

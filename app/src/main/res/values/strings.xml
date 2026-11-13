@@ -9,4 +9,17 @@
     <string name="login_button">Entrar</string>
     <string name="forgot_password">Esqueceu sua senha?</string>
 
+    //user admin
+
+    <string name="admin_title">Olá, Administração</string>
+    <string name="admin_welcome">Bem-vindo ao RecebeAI</string>
+    <string name="admin_subtitle">Gerencie as atividades do condomínio.</string>
+
+    <string name="admin_section_title">Gerenciamento</string>
+    <string name="admin_users">Gerenciar usuários</string>
+    <string name="admin_units">Blocos e apartamentos</string>
+    <string name="admin_pending">Encomendas pendentes</string>
+    <string name="admin_history">Histórico de encomendas</string>
+    <string name="admin_logout">Sair da conta</string>
+
 </resources>
