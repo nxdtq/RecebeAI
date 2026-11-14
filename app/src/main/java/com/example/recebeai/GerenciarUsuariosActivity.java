@@ -1,4 +1,3 @@
-
 package com.example.recebeai;
 
 import android.graphics.Typeface;
@@ -22,9 +21,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GerenciarUsuariosActivity extends AppCompatActivity {
 
@@ -510,6 +513,7 @@ public class GerenciarUsuariosActivity extends AppCompatActivity {
 
                 aprovarMorador(
                         userId,
+                        nome,
                         bloco,
                         apartamento,
                         dialog
@@ -569,6 +573,7 @@ public class GerenciarUsuariosActivity extends AppCompatActivity {
 
     private void aprovarMorador(
             String userId,
+            String nome,
             DocumentSnapshot bloco,
             DocumentSnapshot apartamento,
             AlertDialog dialog) {
@@ -576,26 +581,37 @@ public class GerenciarUsuariosActivity extends AppCompatActivity {
         String nomeBloco = bloco.getString("name");
         String numeroApartamento = apartamento.getString("number");
 
-        db.collection("users")
-                .document(userId)
-                .update(
-                        "active", true,
-                        "status", "approved",
-                        "blockId", bloco.getId(),
-                        "blockName", nomeBloco,
-                        "apartmentId", apartamento.getId(),
-                        "apartmentNumber", numeroApartamento
-                )
+        Map<String, Object> dadosDiretorio = new HashMap<>();
+        dadosDiretorio.put("name", nome);
+        dadosDiretorio.put("blockId", bloco.getId());
+        dadosDiretorio.put("blockName", nomeBloco);
+        dadosDiretorio.put("apartmentId", apartamento.getId());
+        dadosDiretorio.put("apartmentNumber", numeroApartamento);
+        dadosDiretorio.put("active", true);
+
+        WriteBatch batch = db.batch();
+
+        batch.update(
+                db.collection("users").document(userId),
+                "active", true,
+                "status", "approved",
+                "blockId", bloco.getId(),
+                "blockName", nomeBloco,
+                "apartmentId", apartamento.getId(),
+                "apartmentNumber", numeroApartamento
+        );
+
+        batch.set(
+                db.collection("residentDirectory").document(userId),
+                dadosDiretorio
+        );
+
+        batch.commit()
                 .addOnSuccessListener(unused -> {
-
                     dialog.dismiss();
-
-                    concluirAcao(
-                            "Morador aprovado e unidade vinculada com sucesso!"
-                    );
+                    concluirAcao("Morador aprovado e unidade vinculada com sucesso!");
                 })
-                .addOnFailureListener(e ->
-                        mostrarErro());
+                .addOnFailureListener(e -> mostrarErro());
     }
 
     private void confirmarAcao(
@@ -639,42 +655,81 @@ public class GerenciarUsuariosActivity extends AppCompatActivity {
 
     private void executarAcao(String userId, String acao) {
 
-        if ("aprovar".equals(acao) || "reativar".equals(acao)) {
-
-            db.collection("users")
-                    .document(userId)
-                    .update(
-                            "active", true,
-                            "status", "approved"
-                    )
-                    .addOnSuccessListener(unused ->
-                            concluirAcao("Morador ativado com sucesso!"))
-                    .addOnFailureListener(e ->
-                            mostrarErro());
-
-        } else if ("rejeitar".equals(acao)) {
+        if ("rejeitar".equals(acao)) {
 
             db.collection("users")
                     .document(userId)
                     .update("status", "rejected")
                     .addOnSuccessListener(unused ->
                             concluirAcao("Cadastro rejeitado."))
-                    .addOnFailureListener(e ->
-                            mostrarErro());
+                    .addOnFailureListener(e -> mostrarErro());
 
-        } else if ("desativar".equals(acao)) {
-
-            db.collection("users")
-                    .document(userId)
-                    .update(
-                            "active", false,
-                            "status", "disabled"
-                    )
-                    .addOnSuccessListener(unused ->
-                            concluirAcao("Morador desativado com sucesso!"))
-                    .addOnFailureListener(e ->
-                            mostrarErro());
+            return;
         }
+
+        db.collection("users")
+                .document(userId)
+                .get()
+                .addOnSuccessListener(document -> {
+
+                    if (!document.exists()) {
+                        mostrarErro();
+                        return;
+                    }
+
+                    WriteBatch batch = db.batch();
+
+                    if ("reativar".equals(acao)) {
+
+                        Map<String, Object> dadosDiretorio = new HashMap<>();
+
+                        dadosDiretorio.put("name", document.getString("name"));
+                        dadosDiretorio.put("blockId", document.getString("blockId"));
+                        dadosDiretorio.put("blockName", document.getString("blockName"));
+                        dadosDiretorio.put("apartmentId", document.getString("apartmentId"));
+                        dadosDiretorio.put("apartmentNumber", document.getString("apartmentNumber"));
+                        dadosDiretorio.put("active", true);
+
+                        batch.update(
+                                db.collection("users").document(userId),
+                                "active", true,
+                                "status", "approved"
+                        );
+
+                        batch.set(
+                                db.collection("residentDirectory").document(userId),
+                                dadosDiretorio
+                        );
+
+                    } else if ("desativar".equals(acao)) {
+
+                        batch.update(
+                                db.collection("users").document(userId),
+                                "active", false,
+                                "status", "disabled"
+                        );
+
+                        batch.set(
+                                db.collection("residentDirectory").document(userId),
+                                java.util.Collections.singletonMap("active", false),
+                                SetOptions.merge()
+                        );
+                    }
+
+                    batch.commit()
+                            .addOnSuccessListener(unused -> {
+
+                                if ("reativar".equals(acao)) {
+                                    concluirAcao("Morador reativado com sucesso!");
+                                } else {
+                                    concluirAcao("Morador desativado com sucesso!");
+                                }
+
+                            })
+                            .addOnFailureListener(e -> mostrarErro());
+
+                })
+                .addOnFailureListener(e -> mostrarErro());
     }
 
     private void concluirAcao(String mensagem) {
