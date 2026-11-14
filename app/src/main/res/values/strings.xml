@@ -33,4 +33,14 @@
     <string name="register_submit">Cadastrar</string>
     <string name="back_to_login">Já possui uma conta? Entrar</string>
 
+    //tela de gerenciamento de usuarios
+
+    <string name="user_name_label">Nome:</string>
+    <string name="user_email_label">E-mail:</string>
+    <string name="user_approve">Aprovar</string>
+    <string name="user_reject">Rejeitar</string>
+    <string name="users_load_error">Não foi possível carregar os usuários.</string>
+    <string name="user_approved_success">Morador aprovado com sucesso!</string>
+    <string name="user_rejected_success">Cadastro rejeitado.</string>
+
 </resources>
